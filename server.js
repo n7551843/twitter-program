@@ -1,4 +1,4 @@
-const { count } = require('console');
+const { count, Console } = require('console');
 const express = require('express');
 const app = express();
 const https = require('https');
@@ -11,7 +11,33 @@ const streamURL = 'https://api.twitter.com/2/tweets/search/stream';
 // const port = 3000;
 // var API = "https://www.google.com";
 
-var hourlyCount = 0;
+var counterStore = [];
+var cashtagCount = 0;
+var errorCount = 0;
+var runCount = 0;
+
+    // 2 set up counter function
+    async function storeCount () {
+        console.log("storeCount starts")
+        var date = new Date();
+        var obj = { 
+            date:date,
+            cashtagCount:cashtagCount,
+            errorCount:errorCount
+        };
+        console.log("----------------------------------------");        
+        console.log(obj);
+        counterStore.push(obj);
+        cashtagCount = 0;
+        errorCount = 0;
+        console.log(runCount);
+        runCount = runCount + 1;
+        if (runCount >= 10) {
+            console.log("end game");
+            process.exit(1);
+        }
+        setTimeout(storeCount, 30000);
+    }
 
 function streamTweets() {
 
@@ -26,22 +52,22 @@ function streamTweets() {
     // 2
     stream.on('data', (data) => {
         try {
-            console.log(data);
+            // console.log(data);
             const json = JSON.parse(data);
             const text = json.data.text;
             // console.log(text);
             var cashTag = TweetProcessor.detectCashtag(text, currentSearchTerm);
             if (cashTag) {
-                console.log("Cashtag present");
+                cashtagCount = cashtagCount + 1;;
+                // console.log(`cashtag count is ${cashtagCount}`);
                 //Here is where you'll add to the count
+
             } else {
-                console.log("No Cashtag");
-                // Delete this else
+                // console.log("No Cashtag");
             };
-            chunks = [];
         } catch (error) {
-            console.error(error);
-            console.log("this is what's happening *************")
+            // console.log("error");
+            errorCount = errorCount + 1;
         } 
     });
 }
@@ -67,6 +93,7 @@ function streamTweets() {
     }
 
     streamTweets();
+    storeCount();
 })()
 
 

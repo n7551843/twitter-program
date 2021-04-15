@@ -4,7 +4,7 @@ const TOKEN = process.env.twitter_bearer_token;
 const rulesURL = 'https://api.twitter.com/2/tweets/search/stream/rules';
 const streamURL = 'https://api.twitter.com/2/tweets/search/stream';
 
-var searchTerm = 'ANKR';
+var searchTerm = 'UNI';
 var rules = [{
     value: `${searchTerm}`
 }];
@@ -31,7 +31,7 @@ module.exports = {
             }
         });
         console.log("**** setRules returns ****");
-        console.log(response.body);
+        // console.log(response.body);
         return response.body;
     },
     getRules: async function () {
