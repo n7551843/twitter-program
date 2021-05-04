@@ -30,8 +30,6 @@ module.exports = {
                 Authorization: `Bearer ${TOKEN}`
             }
         });
-        console.log("**** setRules returns ****");
-        // console.log(response.body);
         return response.body;
     },
     getRules: async function () {
@@ -40,7 +38,6 @@ module.exports = {
                 Authorization: `Bearer ${TOKEN}`
             }
         });
-        console.log("**** getRules returns ****");
         return response.body;
     },
     deleteRules: async function (rules) {
@@ -59,7 +56,6 @@ module.exports = {
                 Authorization: `Bearer ${TOKEN}`
             }
         });
-        console.log("**** deleteRules returns ****");
         return response.body;
     }
   };
